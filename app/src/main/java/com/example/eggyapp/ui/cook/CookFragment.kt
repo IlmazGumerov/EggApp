@@ -10,15 +10,16 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.example.eggyapp.EggApp
+import androidx.navigation.fragment.navArgs
 import com.example.eggyapp.R
 import com.example.eggyapp.data.SetupType.MEDIUM_TYPE
 import com.example.eggyapp.data.SetupType.SOFT_TYPE
 import com.example.eggyapp.timer.TimerService
 import com.example.eggyapp.timer.TimerService.TimerBinder
 import com.example.eggyapp.ui.base.BaseFragment
+import com.example.eggyapp.ui.base.viewModels
+import com.example.eggyapp.ui.cook.CookScreenModule.CookData
 import com.example.eggyapp.ui.views.ButtonState
 import com.example.eggyapp.utils.getColor
 import com.example.eggyapp.utils.observeLiveData
@@ -34,7 +35,7 @@ class CookFragment : BaseFragment(R.layout.f_egg_cook) {
 
     private var timerBinder: TimerBinder? = null
 
-    private val viewModel: CookViewModel by viewModels { viewModelFactory }
+    private val viewModel: CookViewModel by viewModels()
 
     private val connection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -75,7 +76,6 @@ class CookFragment : BaseFragment(R.layout.f_egg_cook) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        EggApp.appComponent.inject(this)
         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
     }
 
@@ -88,6 +88,11 @@ class CookFragment : BaseFragment(R.layout.f_egg_cook) {
             connection,
             Context.BIND_AUTO_CREATE
         )
+    }
+
+    fun provideCookData(): CookData {
+        val args by navArgs<CookFragmentArgs>()
+        return CookData(args.calculatedTime, args.selectedType)
     }
 
     private fun observeViewModel() {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation android:id="@+id/workflow_graph"
-    app:startDestination="@id/setupFragment"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/workflow_graph"
+    app:startDestination="@id/setupFragment">
     <fragment
         android:id="@+id/setupFragment"
         android:name="com.example.eggyapp.ui.setup.SetupFragment"
@@ -21,5 +21,12 @@
         android:id="@+id/cookFragment"
         android:name="com.example.eggyapp.ui.cook.CookFragment"
         android:label="CookFragment"
-        tools:layout="@layout/f_egg_cook" />
+        tools:layout="@layout/f_egg_cook">
+        <argument
+            android:name="calculatedTime"
+            app:argType="integer" />
+        <argument
+            android:name="selectedType"
+            app:argType="com.example.eggyapp.data.SetupType" />
+    </fragment>
 </navigation>

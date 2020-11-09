@@ -1,26 +1,32 @@
 package com.example.eggyapp.di
 
+import android.app.Application
+import com.example.eggyapp.EggApp
+import com.example.eggyapp.di.modules.ActivityBindsModule
 import com.example.eggyapp.di.modules.SetupModule
-import com.example.eggyapp.di.modules.ViewModelModule
-import com.example.eggyapp.ui.cook.CookFragment
-import com.example.eggyapp.ui.setup.SetupFragment
+import com.example.eggyapp.di.modules.ViewModelFactoryModule
+import com.example.eggyapp.di.skope.PerApplication
+import dagger.BindsInstance
 import dagger.Component
-import javax.inject.Singleton
+import dagger.android.support.AndroidSupportInjectionModule
 
-@Singleton
+@PerApplication
 @Component(
     modules = [
-        ViewModelModule::class,
+        AndroidSupportInjectionModule::class,
+        ViewModelFactoryModule::class,
+        ActivityBindsModule::class,
         SetupModule::class
     ]
 )
 interface AppComponent {
-    fun inject(fragment: SetupFragment)
-    fun inject(fragment: CookFragment)
-    fun inject(factory: ViewModelFactory)
+    fun inject(eggApp: EggApp)
 
-    @Component.Factory
-    interface Factory {
-        fun create(): AppComponent
+    @Component.Builder
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
+
+        fun build(): AppComponent
     }
 }
